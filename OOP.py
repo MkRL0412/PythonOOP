@@ -121,6 +121,30 @@ class Reviewer(Mentor):
         return f'Имя: {self.name} \nФамилия: {self.surname}\n'
 
 
+def average_hw_grade(students, course):
+    total_grades = []
+    for student in students:
+        if course in student.grades:
+            total_grades.extend(student.grades[course])
+
+    if not total_grades:
+        return 0
+
+    return sum(total_grades) / len(total_grades)
+
+
+def average_lecture_grade(lecturers, course):
+    total_grades = []
+    for lecturer in lecturers:
+        if course in lecturer.grades:
+            total_grades.extend(lecturer.grades[course])
+
+    if not total_grades:
+        return 0
+
+    return sum(total_grades) / len(total_grades)
+
+
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
 
@@ -192,18 +216,53 @@ print(student1 == student2)  # False
 print(student1 <= student2)  # False
 print(student1 != student2)  # True
 
-# создаем лекторов
-lecturer1 = Lecturer('Ivan', 'Petrov')
-lecturer1.grades = {'Python': [9, 8, 10]}  # Средняя: 9.0
+reviewer1 = Reviewer('Пётр', 'Иванов')
+reviewer1.courses_attached += ['Python', 'Git']
 
-lecturer2 = Lecturer('Anna', 'Sidorova')
-lecturer2.grades = {'Math': [7, 8, 9]}     # Средняя: 8.0
+reviewer2 = Reviewer('Анна', 'Смирнова')
+reviewer2.courses_attached += ['Python', 'Java']
 
-# сравниваем лекторов
-print(lecturer1 > lecturer2)
-print(lecturer1 == lecturer2)
-print(lecturer1 >= lecturer2)
+# создаем 2 лекторов
+lecturer1 = Lecturer('Игнат', 'Высоцкий')
+lecturer1.courses_attached += ['Python', 'Math']
 
-# сортировка списков
-students = [student2, student1]
-lecturers = [lecturer2, lecturer1]
+lecturer2 = Lecturer('Елена', 'Ковалева')
+lecturer2.courses_attached += ['Python', 'Git']
+
+# создаем 2 студентов
+student1 = Student('Михаил', 'Раскошный', 'М')
+student1.courses_in_progress += ['Python', 'Git']
+student1.finished_courses += ['Введение в программирование']
+
+student2 = Student('Ольга', 'Алёхина', 'Ж')
+student2.courses_in_progress += ['Python', 'Java', 'Math']
+student2.finished_courses += ['Алгоритмы']
+
+# выставляем оценки лекторам
+student1.rate_lecture(lecturer1, 'Python', 9)
+student1.rate_lecture(lecturer1, 'Python', 8)
+student2.rate_lecture(lecturer1, 'Python', 10)
+student2.rate_lecture(lecturer1, 'Math', 7)
+
+student1.rate_lecture(lecturer2, 'Python', 8)
+student2.rate_lecture(lecturer2, 'Python', 9)
+student1.rate_lecture(lecturer2, 'Git', 10)
+
+# Выставляем оценки студентам
+reviewer1.rate_hw(student1, 'Python', 9)
+reviewer1.rate_hw(student1, 'Git', 10)
+reviewer1.rate_hw(student2, 'Python', 8)
+
+reviewer2.rate_hw(student1, 'Python', 10)
+reviewer2.rate_hw(student2, 'Python', 9)
+reviewer2.rate_hw(student2, 'Java', 8)
+
+print("\n=== СРЕДНИЕ ОЦЕНКИ ПО КУРСАМ ===")
+students_list = [student1, student2]
+lecturers_list = [lecturer1, lecturer2]
+
+python_hw_avg = average_hw_grade (students_list, 'Python')
+python_lecture_avg = average_lecture_grade(lecturers_list, 'Python')
+
+print(f"Средняя оценка за домашние задания по курсу 'Python': {python_hw_avg:.1f}")
+print(f"Средняя оценка за лекции по курсу 'Python': {python_lecture_avg:.1f}")
