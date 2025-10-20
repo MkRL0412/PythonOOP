@@ -111,16 +111,14 @@ class Lecturer(Mentor):
     def __str__(self):
         return f'Имя: {self.name} \nФамилия: {self.surname}\nСредняя оценка за лекции:{self.average_grade()}\n'
 
-
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
-        print(f"Reviewer {self.name} проверяет работу {student.name}")
         result = super().rate_hw(student, course, grade)      # Вызываем родительский метод
         return result
     def __str__(self):
         return f'Имя: {self.name} \nФамилия: {self.surname}\n'
 
-
+# определяем функции вне класса для доступа
 def average_hw_grade(students, course):
     total_grades = []
     for student in students:
@@ -216,6 +214,8 @@ print(student1 == student2)  # False
 print(student1 <= student2)  # False
 print(student1 != student2)  # True
 
+# Задание №4
+
 reviewer1 = Reviewer('Пётр', 'Иванов')
 reviewer1.courses_attached += ['Python', 'Git']
 
@@ -248,7 +248,7 @@ student1.rate_lecture(lecturer2, 'Python', 8)
 student2.rate_lecture(lecturer2, 'Python', 9)
 student1.rate_lecture(lecturer2, 'Git', 10)
 
-# Выставляем оценки студентам
+# выставляем оценки студентам
 reviewer1.rate_hw(student1, 'Python', 9)
 reviewer1.rate_hw(student1, 'Git', 10)
 reviewer1.rate_hw(student2, 'Python', 8)
@@ -261,7 +261,7 @@ print("\n=== СРЕДНИЕ ОЦЕНКИ ПО КУРСАМ ===")
 students_list = [student1, student2]
 lecturers_list = [lecturer1, lecturer2]
 
-python_hw_avg = average_hw_grade (students_list, 'Python')
+python_hw_avg = average_hw_grade(students_list, 'Python')
 python_lecture_avg = average_lecture_grade(lecturers_list, 'Python')
 
 print(f"Средняя оценка за домашние задания по курсу 'Python': {python_hw_avg:.1f}")
